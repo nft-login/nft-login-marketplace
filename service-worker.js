@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/cryptoboys-nft-marketplace/precache-manifest.63f8056897d26b089e30311db7c3c9a4.js"
+  "/nft-login-marketplace/precache-manifest.1ae5d926516e5f4a27907141738ac914.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/cryptoboys-nft-marketplace/index.html", {
+workbox.routing.registerNavigationRoute("/nft-login-marketplace/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
