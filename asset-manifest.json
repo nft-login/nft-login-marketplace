@@ -1,15 +1,15 @@
 {
-  "main.css": "/nft-login-marketplace/static/css/main.0d9a5d45.chunk.css",
-  "main.js": "/nft-login-marketplace/static/js/main.da701385.chunk.js",
-  "main.js.map": "/nft-login-marketplace/static/js/main.da701385.chunk.js.map",
-  "static/js/1.3cac9040.chunk.js": "/nft-login-marketplace/static/js/1.3cac9040.chunk.js",
-  "static/js/1.3cac9040.chunk.js.map": "/nft-login-marketplace/static/js/1.3cac9040.chunk.js.map",
-  "runtime~main.js": "/nft-login-marketplace/static/js/runtime~main.8b04611e.js",
-  "runtime~main.js.map": "/nft-login-marketplace/static/js/runtime~main.8b04611e.js.map",
-  "static/media/loading.gif": "/nft-login-marketplace/static/media/loading.26ef8bb4.gif",
-  "static/media/metamask.svg": "/nft-login-marketplace/static/media/metamask.fbf33967.svg",
-  "static/css/main.0d9a5d45.chunk.css.map": "/nft-login-marketplace/static/css/main.0d9a5d45.chunk.css.map",
-  "index.html": "/nft-login-marketplace/index.html",
-  "precache-manifest.1ae5d926516e5f4a27907141738ac914.js": "/nft-login-marketplace/precache-manifest.1ae5d926516e5f4a27907141738ac914.js",
-  "service-worker.js": "/nft-login-marketplace/service-worker.js"
+  "main.css": "/cryptoboys-nft-marketplace/static/css/main.0d9a5d45.chunk.css",
+  "main.js": "/cryptoboys-nft-marketplace/static/js/main.4fd18792.chunk.js",
+  "main.js.map": "/cryptoboys-nft-marketplace/static/js/main.4fd18792.chunk.js.map",
+  "static/js/1.039821d4.chunk.js": "/cryptoboys-nft-marketplace/static/js/1.039821d4.chunk.js",
+  "static/js/1.039821d4.chunk.js.map": "/cryptoboys-nft-marketplace/static/js/1.039821d4.chunk.js.map",
+  "runtime~main.js": "/cryptoboys-nft-marketplace/static/js/runtime~main.8bf4deaf.js",
+  "runtime~main.js.map": "/cryptoboys-nft-marketplace/static/js/runtime~main.8bf4deaf.js.map",
+  "static/media/loading.gif": "/cryptoboys-nft-marketplace/static/media/loading.26ef8bb4.gif",
+  "static/media/metamask.svg": "/cryptoboys-nft-marketplace/static/media/metamask.fbf33967.svg",
+  "static/css/main.0d9a5d45.chunk.css.map": "/cryptoboys-nft-marketplace/static/css/main.0d9a5d45.chunk.css.map",
+  "index.html": "/cryptoboys-nft-marketplace/index.html",
+  "precache-manifest.ef30436db004a69f74f67b6881a9ca05.js": "/cryptoboys-nft-marketplace/precache-manifest.ef30436db004a69f74f67b6881a9ca05.js",
+  "service-worker.js": "/cryptoboys-nft-marketplace/service-worker.js"
 }
