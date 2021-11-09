@@ -29,9 +29,16 @@ module.exports = {
       timeoutBlocks: 2000,
       skipDryRun: true,
     },
+    heco: {
+      provider: () =>
+        new HDWalletProvider(MNEMONIC, `wss://ws-testnet.hecochain.com`),
+      network_id: 256,
+      confirmations: 5,
+      timeoutBlocks: 200,
+    },
     clover: {
       provider: () =>
-        new HDWalletProvider(MNEMONIC, `https://rpc.clover.finance`),
+        new HDWalletProvider(MNEMONIC, `https://rpc-3.clover.finance`),
       network_id: 1023,
       gas: 55000000,
       gasPrice: 10_000_000_000,
