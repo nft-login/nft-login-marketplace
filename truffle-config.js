@@ -42,10 +42,7 @@ module.exports = {
     celo: {
       provider: () =>
         new HDWalletProvider(MNEMONIC, `https://alfajores-forno.celo-testnet.org`),
-      network_id: 44787,
-      confirmations: 5,
-      timeoutBlocks: 200,
-      skipDryRun: true,
+      network_id: 44787
     },
   },
   contracts_directory: "./src/contracts/",
