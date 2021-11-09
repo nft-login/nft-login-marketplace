@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CryptoBoyNFTImage from "../CryptoBoyNFTImage/CryptoBoyNFTImage";
+import CryptoBoyNFTJdenticon from "../CryptoBoyNFTImage/CryptoBoyNFTJdenticon";
 import MyCryptoBoyNFTDetails from "../MyCryptoBoyNFTDetails/MyCryptoBoyNFTDetails";
 import Loading from "../Loading/Loading";
 
@@ -44,10 +44,10 @@ const MyCryptoBoys = ({
               <div className="row">
                 <div className="col-md-6">
                   {!loading ? (
-                    <CryptoBoyNFTImage
-                      colors={
+                    <CryptoBoyNFTJdenticon
+                      name={
                         cryptoboy.metaData !== undefined
-                          ? cryptoboy.metaData.metaData.colors
+                          ? cryptoboy.metaData.name
                           : ""
                       }
                     />
