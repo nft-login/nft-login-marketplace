@@ -39,6 +39,14 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true,
     },
+    celo: {
+      provider: () =>
+        new HDWalletProvider(MNEMONIC, `https://alfajores-forno.celo-testnet.org`),
+      network_id: 44787,
+      confirmations: 5,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
   },
   contracts_directory: "./src/contracts/",
   contracts_build_directory: "./src/abis/",
