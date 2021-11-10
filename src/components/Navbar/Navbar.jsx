@@ -2,13 +2,13 @@ import React from "react";
 import icon from "./favicon-32x32.png";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({symbol}) => {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <div className="container">
         <img src={icon} alt="" />
         <Link to="/" className="navbar-brand ml-2">
-          NFT's
+          {symbol} NFT's
         </Link>
         <button
           className="navbar-toggler"

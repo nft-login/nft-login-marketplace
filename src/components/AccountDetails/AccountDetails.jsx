@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown'
 
-const AccountDetails = ({ accountAddress, accountBalance }) => {
+const AccountDetails = ({ baseURI, name, accountAddress, accountBalance }) => {
+  const [data, setData] = useState({ markdown: "" });
+
+ useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(
+        baseURI
+      ); 
+      setData({ markdown: await result.text()} );
+    };
+ 
+    fetchData();
+  }, "");
+ 
+
   return (
     <div>
       <div className="jumbotron">
-        <h1 className="display-5">Early Access NFT Marketplace</h1>
+        <h1 className="display-5">{name} NFT Marketplace</h1>
         <p className="lead">
           This is an NFT marketplace where you can mint ERC721 implemented{" "}
           <i>Early Access NFTs</i> and manage them.
@@ -14,6 +29,8 @@ const AccountDetails = ({ accountAddress, accountBalance }) => {
         <h4>{accountAddress}</h4>
         <p className="lead">Account balance :</p>
         <h4>{accountBalance} Ξ</h4>
+        <hr className="my-4" />
+        <ReactMarkdown children={data.markdown} />
       </div>
     </div>
   );
