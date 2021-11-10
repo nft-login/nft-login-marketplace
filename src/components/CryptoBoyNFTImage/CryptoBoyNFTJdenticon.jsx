@@ -1,9 +1,8 @@
 import React from "react";
-import Jdenticon from 'react-jdenticon';
+import Jdenticon from "react-jdenticon";
 
-const CryptoBoyNFTJdenticon = ({ name }) => {
-  console.log(name);
-  return(<Jdenticon size="144" value={name} />);
+const CryptoBoyNFTJdenticon = ({ uri }) => {
+  return <Jdenticon size="144" value={uri} />;
 };
 
 export default CryptoBoyNFTJdenticon;
