@@ -7,7 +7,7 @@ module.exports = {
   networks: {
     development: {
       host: "127.0.0.1",
-      port: 7545,
+      port: 8545,
       network_id: "*", // Match any network id
     },
     kovan: {
@@ -43,6 +43,14 @@ module.exports = {
       gas: 55000000,
       gasPrice: 10_000_000_000,
       confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
+    celo: {
+      provider: () =>
+        new HDWalletProvider(MNEMONIC, `https://alfajores-forno.celo-testnet.org`),
+      network_id: 44787,
+      confirmations: 5,
       timeoutBlocks: 200,
       skipDryRun: true,
     },

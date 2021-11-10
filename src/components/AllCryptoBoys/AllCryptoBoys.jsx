@@ -4,7 +4,7 @@ import CryptoBoyNFTDetails from "../CryptoBoyNFTDetails/CryptoBoyNFTDetails";
 import Loading from "../Loading/Loading";
 
 const AllCryptoBoys = ({
-  cryptoBoys,
+  tokens,
   accountAddress,
   totalTokensMinted,
   changeTokenPrice,
@@ -14,14 +14,14 @@ const AllCryptoBoys = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (cryptoBoys.length !== 0) {
-      if (cryptoBoys[0].metaData !== undefined) {
+    if (tokens.length !== 0) {
+      if (tokens[0].url !== undefined) {
         setLoading(loading);
       } else {
         setLoading(false);
       }
     }
-  }, [cryptoBoys]);
+  }, [tokens]);
 
   return (
     <div>
@@ -34,17 +34,17 @@ const AllCryptoBoys = ({
         </div>
       </div>
       <div className="d-flex flex-wrap mb-2">
-        {cryptoBoys.map((cryptoboy) => {
+        {tokens.map((token) => {
           return (
             <div
-              key={cryptoboy.tokenId.toNumber()}
+              key={token.tokenId}
               className="w-50 p-4 mt-1 border"
             >
               {!loading ? (
                 <CryptoBoyNFTJdenticon
-                  name={
-                    cryptoboy.metaData !== undefined
-                      ? cryptoboy.metaData.name
+                  uri={
+                    token.uri !== undefined
+                      ? token.uri
                       : ""
                   }
                 />
@@ -52,7 +52,7 @@ const AllCryptoBoys = ({
                 <Loading />
               )}
               <CryptoBoyNFTDetails
-                cryptoboy={cryptoboy}
+                token={token}
                 accountAddress={accountAddress}
                 changeTokenPrice={changeTokenPrice}
                 toggleForSale={toggleForSale}

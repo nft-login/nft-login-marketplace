@@ -5,25 +5,25 @@ import Loading from "../Loading/Loading";
 
 const MyCryptoBoys = ({
   accountAddress,
-  cryptoBoys,
+  tokens,
   totalTokensOwnedByAccount,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [myCryptoBoys, setMyCryptoBoys] = useState([]);
+  const [myTokens, setMyTokens] = useState([]);
 
   useEffect(() => {
-    if (cryptoBoys.length !== 0) {
-      if (cryptoBoys[0].metaData !== undefined) {
+    if (tokens.length !== 0) {
+      if (tokens[0].uri !== undefined) {
         setLoading(loading);
       } else {
         setLoading(false);
       }
     }
-    const my_crypto_boys = cryptoBoys.filter(
-      (cryptoboy) => cryptoboy.currentOwner === accountAddress
+    const my_tokens = tokens.filter(
+      (token) => token.currentOwner === accountAddress
     );
-    setMyCryptoBoys(my_crypto_boys);
-  }, [cryptoBoys]);
+    setMyTokens(my_tokens);
+  }, [tokens]);
 
   return (
     <div>
@@ -35,19 +35,19 @@ const MyCryptoBoys = ({
         </div>
       </div>
       <div className="d-flex flex-wrap mb-2">
-        {myCryptoBoys.map((cryptoboy) => {
+        {myTokens.map((token) => {
           return (
             <div
-              key={cryptoboy.tokenId.toNumber()}
+              key={token.tokenId}
               className="w-50 p-4 mt-1 border"
             >
               <div className="row">
                 <div className="col-md-6">
                   {!loading ? (
                     <CryptoBoyNFTJdenticon
-                      name={
-                        cryptoboy.metaData !== undefined
-                          ? cryptoboy.metaData.name
+                      uri={
+                        token.uri !== undefined
+                          ? token.uri
                           : ""
                       }
                     />
@@ -57,7 +57,7 @@ const MyCryptoBoys = ({
                 </div>
                 <div className="col-md-6 text-center">
                   <MyCryptoBoyNFTDetails
-                    cryptoboy={cryptoboy}
+                    token={token}
                     accountAddress={accountAddress}
                   />
                 </div>

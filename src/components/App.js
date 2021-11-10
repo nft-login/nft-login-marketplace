@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { HashRouter, Route } from "react-router-dom";
 import "./App.css";
 import Web3 from "web3";
-import CryptoBoys from "../abis/CryptoBoys.json";
+import EarlyAccessGame from "../abis/EarlyAccessGame.json";
 
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -21,15 +21,22 @@ const ipfs = ipfsClient({
   protocol: "https",
 });
 
+function getContract() {
+  const search = window.location.search;
+  const contract = new URLSearchParams(search).get("contract");
+  console.log(contract);
+  return contract;
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       accountAddress: "",
       accountBalance: "",
-      cryptoBoysContract: null,
-      cryptoBoysCount: 0,
-      cryptoBoys: [],
+      earlyAccessGameContract: null,
+      tokensCount: 0,
+      tokens: [],
       loading: true,
       metamaskConnected: false,
       contractDetected: false,
@@ -44,6 +51,9 @@ class App extends Component {
 
   componentWillMount = async () => {
     await this.loadWeb3();
+  };
+
+  componentDidMount = async () => {
     await this.loadBlockchainData();
     await this.setMetaData();
     await this.setMintBtnTimer();
@@ -63,7 +73,7 @@ class App extends Component {
 
   checkIfCanMint = (lastMintTime) => {
     const mintBtn = document.getElementById("mintBtn");
-    const timeGap = 300000; //5min in milliseconds
+    const timeGap = 60000; //1min in milliseconds
     const countDownTime = lastMintTime + timeGap;
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -108,34 +118,42 @@ class App extends Component {
       this.setState({ accountBalance });
       this.setState({ loading: false });
       const networkId = await web3.eth.net.getId();
-      const networkData = CryptoBoys.networks[networkId];
+      const networkData = EarlyAccessGame.networks[networkId];
+      const contractAddress = getContract() || networkData.address;
       if (networkData) {
         this.setState({ loading: true });
-        const cryptoBoysContract = web3.eth.Contract(
-          CryptoBoys.abi,
-          networkData.address
+        const earlyAccessGameContract = web3.eth.Contract(
+          EarlyAccessGame.abi,
+          contractAddress
         );
-        this.setState({ cryptoBoysContract });
+        this.setState({ earlyAccessGameContract });
         this.setState({ contractDetected: true });
-        const cryptoBoysCount = await cryptoBoysContract.methods
-          .cryptoBoyCounter()
+        const count = await earlyAccessGameContract.methods
+          .totalSupply()
           .call();
-        this.setState({ cryptoBoysCount });
-        for (var i = 1; i <= cryptoBoysCount; i++) {
-          const cryptoBoy = await cryptoBoysContract.methods
-            .allCryptoBoys(i)
-            .call();
+        this.setState({ count });
+        for (var i = 0; i < count; i++) {
+          const token = {
+            tokenId: i,
+            uri: await earlyAccessGameContract.methods.tokenURI(i).call(),
+            price: await earlyAccessGameContract.methods.priceOf(i).call(),
+            currentOwner: await earlyAccessGameContract.methods
+              .ownerOf(i)
+              .call(),
+            forSale: await earlyAccessGameContract.methods.isForSale(i).call(),
+          };
+          console.log(token);
           this.setState({
-            cryptoBoys: [...this.state.cryptoBoys, cryptoBoy],
+            tokens: [...this.state.tokens, token],
           });
         }
-        let totalTokensMinted = await cryptoBoysContract.methods
-          .getNumberOfTokensMinted()
+        let totalTokensMinted = await earlyAccessGameContract.methods
+          .totalSupply()
           .call();
         totalTokensMinted = totalTokensMinted.toNumber();
         this.setState({ totalTokensMinted });
-        let totalTokensOwnedByAccount = await cryptoBoysContract.methods
-          .getTotalNumberOfTokensOwnedByAnAddress(this.state.accountAddress)
+        let totalTokensOwnedByAccount = await earlyAccessGameContract.methods
+          .balanceOf(this.state.accountAddress)
           .call();
         totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
         this.setState({ totalTokensOwnedByAccount });
@@ -153,119 +171,75 @@ class App extends Component {
   };
 
   setMetaData = async () => {
-    if (this.state.cryptoBoys.length !== 0) {
-      this.state.cryptoBoys.map(async (cryptoboy) => {
-        const result = await fetch(cryptoboy.tokenURI);
-        const metaData = await result.json();
+    if (this.state.tokens.length !== 0) {
+      this.state.tokens.map(async (token) => {
+        const result = await fetch(token.tokenURI);
+        const metaData = await result.text();
         this.setState({
-          cryptoBoys: this.state.cryptoBoys.map((cryptoboy) =>
-            cryptoboy.tokenId.toNumber() === Number(metaData.tokenId)
+          tokens: this.state.tokens.map((token) =>
+            true
               ? {
-                  ...cryptoboy,
+                  ...token,
                   metaData,
                 }
-              : cryptoboy
+              : token
           ),
         });
       });
     }
   };
 
-  mintMyNFT = async (colors, name, tokenPrice) => {
+  mintMyNFT = async (tokenCount) => {
     this.setState({ loading: true });
-    const colorsArray = Object.values(colors);
-    let colorsUsed = [];
-    for (let i = 0; i < colorsArray.length; i++) {
-      if (colorsArray[i] !== "") {
-        let colorIsUsed = await this.state.cryptoBoysContract.methods
-          .colorExists(colorsArray[i])
-          .call();
-        if (colorIsUsed) {
-          colorsUsed = [...colorsUsed, colorsArray[i]];
-        } else {
-          continue;
-        }
-      }
-    }
-    const nameIsUsed = await this.state.cryptoBoysContract.methods
-      .tokenNameExists(name)
-      .call();
-    if (colorsUsed.length === 0 && !nameIsUsed) {
-      const {
-        cardBorderColor,
-        cardBackgroundColor,
-        headBorderColor,
-        headBackgroundColor,
-        leftEyeBorderColor,
-        rightEyeBorderColor,
-        leftEyeBackgroundColor,
-        rightEyeBackgroundColor,
-        leftPupilBackgroundColor,
-        rightPupilBackgroundColor,
-        mouthColor,
-        neckBackgroundColor,
-        neckBorderColor,
-        bodyBackgroundColor,
-        bodyBorderColor,
-      } = colors;
-      let previousTokenId;
-      previousTokenId = await this.state.cryptoBoysContract.methods
-        .cryptoBoyCounter()
-        .call();
-      previousTokenId = previousTokenId.toNumber();
-      const tokenId = previousTokenId + 1;
-      const tokenObject = {
-        tokenName: "Crypto Boy",
-        tokenSymbol: "CB",
-        tokenId: `${tokenId}`,
-        name: name,
-        metaData: {
-          type: "color",
-          colors: {
-            cardBorderColor,
-            cardBackgroundColor,
-            headBorderColor,
-            headBackgroundColor,
-            leftEyeBorderColor,
-            rightEyeBorderColor,
-            leftEyeBackgroundColor,
-            rightEyeBackgroundColor,
-            leftPupilBackgroundColor,
-            rightPupilBackgroundColor,
-            mouthColor,
-            neckBackgroundColor,
-            neckBorderColor,
-            bodyBackgroundColor,
-            bodyBorderColor,
-          },
-        },
-      };
-      const cid = await ipfs.add(JSON.stringify(tokenObject));
-      let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
-      const price = window.web3.utils.toWei(tokenPrice.toString(), "Ether");
-      this.state.cryptoBoysContract.methods
-        .mintCryptoBoy(name, tokenURI, price, colorsArray)
-        .send({ from: this.state.accountAddress })
-        .on("confirmation", () => {
-          localStorage.setItem(this.state.accountAddress, new Date().getTime());
-          this.setState({ loading: false });
-          window.location.reload();
+    this.state.earlyAccessGameContract.methods
+      .mintMultiple(this.state.accountAddress, tokenCount)
+      .send({ from: this.state.accountAddress })
+      .on("confirmation", () => {
+        localStorage.setItem(this.state.accountAddress, new Date().getTime());
+        this.setState({ loading: false });
+        window.location.reload();
+      });
+  };
+
+  deployMyNFT = async (name, description, price) => {
+    this.setState({ loading: true });
+
+    const cid = await ipfs.add(description);
+    let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}/?token=`;
+    console.log(tokenURI);
+    this.state.earlyAccessGameContract
+      .deploy({
+        data: EarlyAccessGame.bytecode,
+        arguments: [
+          name,
+          "EAG",
+          tokenURI,
+          window.web3.utils.toWei(price, "Ether"),
+        ],
+      })
+      .send({ from: this.state.accountAddress })
+      .on("error", function(error) {})
+      .on("confirmation", (confirmationNumber, receipt) => {
+        let newContractInstance = this.state.earlyAccessGameContract.clone();
+        newContractInstance.options.address = receipt.contractAddress;
+        console.log(receipt.contractAddress);
+        localStorage.setItem(this.state.accountAddress, new Date().getTime());
+        var searchParams = new URLSearchParams(window.location.search);
+        searchParams.set("contract", receipt.contractAddress);
+        window.location.search = searchParams.toString();
+        this.setState({
+          loading: false,
+          earlyAccessGameContract: newContractInstance,
         });
-    } else {
-      if (nameIsUsed) {
-        this.setState({ nameIsUsed: true });
-        this.setState({ loading: false });
-      } else if (colorsUsed.length !== 0) {
-        this.setState({ colorIsUsed: true });
-        this.setState({ colorsUsed });
-        this.setState({ loading: false });
-      }
-    }
+        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+        window.history.pushState(null, "", newRelativePathQuery)     
+        window.location.reload();
+      });
   };
 
   toggleForSale = (tokenId) => {
     this.setState({ loading: true });
-    this.state.cryptoBoysContract.methods
+    this.state.earlyAccessGameContract.methods
       .toggleForSale(tokenId)
       .send({ from: this.state.accountAddress })
       .on("confirmation", () => {
@@ -277,8 +251,8 @@ class App extends Component {
   changeTokenPrice = (tokenId, newPrice) => {
     this.setState({ loading: true });
     const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-    this.state.cryptoBoysContract.methods
-      .changeTokenPrice(tokenId, newTokenPrice)
+    this.state.earlyAccessGameContract.methods
+      .setPrice(tokenId, newTokenPrice)
       .send({ from: this.state.accountAddress })
       .on("confirmation", () => {
         this.setState({ loading: false });
@@ -288,7 +262,7 @@ class App extends Component {
 
   buyCryptoBoy = (tokenId, price) => {
     this.setState({ loading: true });
-    this.state.cryptoBoysContract.methods
+    this.state.earlyAccessGameContract.methods
       .buyToken(tokenId)
       .send({ from: this.state.accountAddress, value: price })
       .on("confirmation", () => {
@@ -325,6 +299,7 @@ class App extends Component {
                 render={() => (
                   <FormAndPreview
                     mintMyNFT={this.mintMyNFT}
+                    deployMyNFT={this.deployMyNFT}
                     nameIsUsed={this.state.nameIsUsed}
                     colorIsUsed={this.state.colorIsUsed}
                     colorsUsed={this.state.colorsUsed}
@@ -337,7 +312,7 @@ class App extends Component {
                 render={() => (
                   <AllCryptoBoys
                     accountAddress={this.state.accountAddress}
-                    cryptoBoys={this.state.cryptoBoys}
+                    tokens={this.state.tokens}
                     totalTokensMinted={this.state.totalTokensMinted}
                     changeTokenPrice={this.changeTokenPrice}
                     toggleForSale={this.toggleForSale}
@@ -350,7 +325,7 @@ class App extends Component {
                 render={() => (
                   <MyCryptoBoys
                     accountAddress={this.state.accountAddress}
-                    cryptoBoys={this.state.cryptoBoys}
+                    tokens={this.state.tokens}
                     totalTokensOwnedByAccount={
                       this.state.totalTokensOwnedByAccount
                     }
@@ -360,7 +335,9 @@ class App extends Component {
               <Route
                 path="/queries"
                 render={() => (
-                  <Queries cryptoBoysContract={this.state.cryptoBoysContract} />
+                  <Queries
+                    earlyAccessGameContract={this.state.earlyAccessGameContract}
+                  />
                 )}
               />
             </HashRouter>
