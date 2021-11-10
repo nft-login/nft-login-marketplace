@@ -103,4 +103,8 @@ contract EarlyAccessGame is
     {
         return super.tokenURI(tokenId);
     }
+
+    function baseURI() public view returns (string memory) {
+        return _baseURI();
+    }
 }

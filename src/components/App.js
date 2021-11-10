@@ -42,6 +42,9 @@ class App extends Component {
       contractDetected: false,
       totalTokensMinted: 0,
       totalTokensOwnedByAccount: 0,
+      name: "",
+      symbol: "",
+      baseURI: "https://example.com",
       nameIsUsed: false,
       colorIsUsed: false,
       colorsUsed: [],
@@ -104,6 +107,20 @@ class App extends Component {
     }
   };
 
+  loadToken = async (contract, tokenId) => {
+    const token = {
+      tokenId: tokenId,
+      uri: await contract.methods.tokenURI(tokenId).call(),
+      price: await contract.methods.priceOf(tokenId).call(),
+      currentOwner: await contract.methods.ownerOf(tokenId).call(),
+      forSale: await contract.methods.isForSale(tokenId).call(),
+    };
+    console.log(token);
+    this.setState({
+      tokens: [...this.state.tokens, token],
+    });
+  };
+
   loadBlockchainData = async () => {
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -133,19 +150,7 @@ class App extends Component {
           .call();
         this.setState({ count });
         for (var i = 0; i < count; i++) {
-          const token = {
-            tokenId: i,
-            uri: await earlyAccessGameContract.methods.tokenURI(i).call(),
-            price: await earlyAccessGameContract.methods.priceOf(i).call(),
-            currentOwner: await earlyAccessGameContract.methods
-              .ownerOf(i)
-              .call(),
-            forSale: await earlyAccessGameContract.methods.isForSale(i).call(),
-          };
-          console.log(token);
-          this.setState({
-            tokens: [...this.state.tokens, token],
-          });
+          this.loadToken(earlyAccessGameContract, i);
         }
         let totalTokensMinted = await earlyAccessGameContract.methods
           .totalSupply()
@@ -157,6 +162,12 @@ class App extends Component {
           .call();
         totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
         this.setState({ totalTokensOwnedByAccount });
+        let name = await earlyAccessGameContract.methods.name().call();
+        this.setState({ name });
+        let symbol = await earlyAccessGameContract.methods.symbol().call();
+        this.setState({ symbol });
+        let baseURI = await earlyAccessGameContract.methods.baseURI().call();
+        this.setState({ baseURI });
         this.setState({ loading: false });
       } else {
         this.setState({ contractDetected: false });
@@ -231,8 +242,9 @@ class App extends Component {
           loading: false,
           earlyAccessGameContract: newContractInstance,
         });
-        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-        window.history.pushState(null, "", newRelativePathQuery)     
+        var newRelativePathQuery =
+          window.location.pathname + "?" + searchParams.toString();
+        window.history.pushState(null, "", newRelativePathQuery);
         window.location.reload();
       });
   };
@@ -283,12 +295,14 @@ class App extends Component {
         ) : (
           <>
             <HashRouter basename="/">
-              <Navbar />
+              <Navbar symbol={this.state.symbol} />
               <Route
                 path="/"
                 exact
                 render={() => (
                   <AccountDetails
+                    name={this.state.name}
+                    baseURI={this.state.baseURI}
                     accountAddress={this.state.accountAddress}
                     accountBalance={this.state.accountBalance}
                   />
