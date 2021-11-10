@@ -263,7 +263,7 @@ class App extends Component {
   buyCryptoBoy = (tokenId, price) => {
     this.setState({ loading: true });
     this.state.earlyAccessGameContract.methods
-      .buyToken(tokenId)
+      .buy(tokenId)
       .send({ from: this.state.accountAddress, value: price })
       .on("confirmation", () => {
         this.setState({ loading: false });
