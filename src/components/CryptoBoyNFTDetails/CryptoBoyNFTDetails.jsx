@@ -20,10 +20,6 @@ class CryptoBoyNFTDetails extends Component {
           {this.props.token.tokenId}
         </p>
         <p>
-          <span className="font-weight-bold">Name</span> :{" "}
-          {this.props.token.uri}
-        </p>
-        <p>
           <span className="font-weight-bold">Owned By</span> :{" "}
           {this.props.token.currentOwner.substr(0, 5) +
             "..." +
