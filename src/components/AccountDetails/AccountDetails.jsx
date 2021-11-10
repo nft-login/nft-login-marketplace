@@ -1,10 +1,10 @@
 import React from "react";
 
-const AccountDetails = ({ accountAddress, accountBalance }) => {
+const AccountDetails = ({ baseURI, name, accountAddress, accountBalance }) => {
   return (
     <div>
       <div className="jumbotron">
-        <h1 className="display-5">Early Access NFT Marketplace</h1>
+        <h1 className="display-5">{name} NFT Marketplace</h1>
         <p className="lead">
           This is an NFT marketplace where you can mint ERC721 implemented{" "}
           <i>Early Access NFTs</i> and manage them.
@@ -14,6 +14,9 @@ const AccountDetails = ({ accountAddress, accountBalance }) => {
         <h4>{accountAddress}</h4>
         <p className="lead">Account balance :</p>
         <h4>{accountBalance} Ξ</h4>
+        <p>
+          {baseURI}
+        </p>
       </div>
     </div>
   );
