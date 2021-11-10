@@ -15,12 +15,14 @@ jobs:
       - name: Install node dependencies
         run: npm install
       - name: Build App
-        run: PUBLIC_URL=/nft-login-marketplace npm run build
+        run: PUBLIC_URL=/nft-login-marketplace/${GITHUB_REF##*/} npm run build
+      - name: creage gh-pages in subdir
+        run: mkdir gh-pages/ && mv build/ gh-pages/${GITHUB_REF##*/}/
 
       - name: Deploy App
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./build
+          publish_dir: ./gh-pages
           keep_files: true
