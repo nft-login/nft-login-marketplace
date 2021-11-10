@@ -204,8 +204,8 @@ class App extends Component {
   deployMyNFT = async (name, description, price) => {
     this.setState({ loading: true });
 
-    const cid = await ipfs.add(JSON.stringify(description));
-    let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}`;
+    const cid = await ipfs.add(description);
+    let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}/?token=`;
     console.log(tokenURI);
     this.state.earlyAccessGameContract
       .deploy({
@@ -286,6 +286,7 @@ class App extends Component {
               <Navbar />
               <Route
                 path="/"
+                exact
                 render={() => (
                   <AccountDetails
                     accountAddress={this.state.accountAddress}
