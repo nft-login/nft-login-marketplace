@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown'
 
 const AccountDetails = ({ baseURI, name, accountAddress, accountBalance }) => {
+  const [data, setData] = useState({ markdown: "" });
+
+ useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(
+        baseURI
+      ); 
+      setData({ markdown: await result.text()} );
+    };
+ 
+    fetchData();
+  }, "");
+ 
+
   return (
     <div>
       <div className="jumbotron">
@@ -14,9 +29,8 @@ const AccountDetails = ({ baseURI, name, accountAddress, accountBalance }) => {
         <h4>{accountAddress}</h4>
         <p className="lead">Account balance :</p>
         <h4>{accountBalance} Ξ</h4>
-        <p>
-          {baseURI}
-        </p>
+        <hr className="my-4" />
+        <ReactMarkdown children={data.markdown} />
       </div>
     </div>
   );
