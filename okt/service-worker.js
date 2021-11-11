@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nft-login-marketplace/okt/precache-manifest.daaca7f4f79a02ecc5f30c104d211cfc.js"
+  "/nft-login-marketplace/okt/precache-manifest.7a6e355a70c847d488c6eb4e2d43c6c6.js"
 );
 
 workbox.clientsClaim();
