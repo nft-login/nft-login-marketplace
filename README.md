@@ -1,7 +1,7 @@
-# Crypto Boy NFT Marketplace
-<i>NFT marketplace DApp where users mint ERC721 implemented Crypto Boy NFTs.</i>
+# Early Access Games NFT Marketplace
+<i>NFT marketplace for Game Maker to provide early access as NFTs.</i>
 #
-<img align="right" width="350" src="./image.png"></img>
+
 ### Features
 - Mint custom ERC721 implemented Crypto Boy Tokens.
 - Sell Crypto Boy tokens on the marketplace.
@@ -37,15 +37,10 @@ npm i ganache-cli
 ```
 #### Run ganache-cli
 ```
-ganache-cli --port 7545
-```
-#### Open new terminal window and clone this repository
-```
-git clone https://github.com/devpavan04/cryptoboys-NFT-marketplace.git
+ganache-cli --port 8545
 ```
 #### Install dependencies
 ```
-cd cryptoboys-NFT-marketplace
 npm install
 ```
 #### Compile smart contract
@@ -64,5 +59,5 @@ truffle test
 ```
 npm start
 ```
-- Open metamask browser wallet and connect network to Localhost 7545.
+- Open metamask browser wallet and connect network to Localhost 8545.
 - Import accounts from ganache-cli into the metamask browser wallet to make transactions on the DApp.
