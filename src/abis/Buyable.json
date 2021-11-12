@@ -423,7 +423,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// contracts/Buyable.sol\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"@openzeppelin/contracts/token/ERC721/ERC721.sol\";\n\nabstract contract Buyable is ERC721 {\n    mapping(uint256 => bool) private _forSale;\n    mapping(uint256 => uint256) private _price;\n    uint256 _basePrice;\n\n    function buy(uint256 tokenId) public payable {\n        require(msg.sender != address(0));\n        require(_forSale[tokenId], \"Buyable: token is not for sale\");\n        require(msg.value >= _price[tokenId]);\n        address payable sendTo = payable(ownerOf(tokenId));\n        sendTo.transfer(msg.value);\n        _transfer(ownerOf(tokenId), _msgSender(), tokenId);\n    }\n\n    function setPrice(uint256 tokenId, uint256 price) public {\n        require(\n            ownerOf(tokenId) == _msgSender(),\n            \"Buyable: caller is not owner\"\n        );\n        _price[tokenId] = price;\n    }\n\n    function priceOf(uint256 tokenId) public view returns (uint256) {\n        return _price[tokenId];\n    }\n\n    function isForSale(uint256 tokenId) public view returns (bool) {\n        return _forSale[tokenId];\n    }\n\n    function toggleForSale(uint256 tokenId) public {\n        require(msg.sender != address(0));\n        require(\n            ownerOf(tokenId) == _msgSender(),\n            \"Buyable: caller is not owner\"\n        );\n        if (_forSale[tokenId]) {\n            _forSale[tokenId] = false;\n        } else {\n            _forSale[tokenId] = true;\n        }\n    }\n\n    function _mint(address to, uint256 tokenId) internal virtual override(ERC721) {\n        _forSale[tokenId] = true;\n        _price[tokenId] = _basePrice;\n        super._mint(to, tokenId);\n    }\n}\n",
-  "sourcePath": "/home/chriamue/workspace/nftlogin/nft-login/nft-login-marketplace/src/contracts/Buyable.sol",
+  "sourcePath": "/home/chriamue/workspace/nft-login/nft-login-marketplace/src/contracts/Buyable.sol",
   "ast": {
     "absolutePath": "project:/src/contracts/Buyable.sol",
     "exportedSymbols": {
@@ -5414,7 +5414,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-11T20:32:03.621Z",
+  "updatedAt": "2021-11-12T07:50:29.479Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
