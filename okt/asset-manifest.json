@@ -1,7 +1,7 @@
 {
   "main.css": "/nft-login-marketplace/okt/static/css/main.20248a64.chunk.css",
-  "main.js": "/nft-login-marketplace/okt/static/js/main.81a33eb5.chunk.js",
-  "main.js.map": "/nft-login-marketplace/okt/static/js/main.81a33eb5.chunk.js.map",
+  "main.js": "/nft-login-marketplace/okt/static/js/main.4935e86a.chunk.js",
+  "main.js.map": "/nft-login-marketplace/okt/static/js/main.4935e86a.chunk.js.map",
   "static/js/1.9067f900.chunk.js": "/nft-login-marketplace/okt/static/js/1.9067f900.chunk.js",
   "static/js/1.9067f900.chunk.js.map": "/nft-login-marketplace/okt/static/js/1.9067f900.chunk.js.map",
   "runtime~main.js": "/nft-login-marketplace/okt/static/js/runtime~main.8312a190.js",
@@ -10,6 +10,6 @@
   "static/media/metamask.svg": "/nft-login-marketplace/okt/static/media/metamask.fbf33967.svg",
   "static/css/main.20248a64.chunk.css.map": "/nft-login-marketplace/okt/static/css/main.20248a64.chunk.css.map",
   "index.html": "/nft-login-marketplace/okt/index.html",
-  "precache-manifest.7a6e355a70c847d488c6eb4e2d43c6c6.js": "/nft-login-marketplace/okt/precache-manifest.7a6e355a70c847d488c6eb4e2d43c6c6.js",
+  "precache-manifest.d089d7fd0ddca39baf933614b145e7c8.js": "/nft-login-marketplace/okt/precache-manifest.d089d7fd0ddca39baf933614b145e7c8.js",
   "service-worker.js": "/nft-login-marketplace/okt/service-worker.js"
 }
