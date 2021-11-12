@@ -1,5 +1,5 @@
 const EarlyAccessGame = artifacts.require("EarlyAccessGame");
 
 module.exports = async function(deployer) {
-  await deployer.deploy(EarlyAccessGame, "EarlyAccessGame", "EAG", "https://bafybeicyscc7nsotmk5fk7ru4l3f3mzfyectvl35kqwgsqqjdmd4gykeqa.ipfs.infura-ipfs.io/?token=", web3.utils.toWei("0.001", "Ether"));
+  await deployer.deploy(EarlyAccessGame, "Hextris Early Access Demo", "EAG", "https://bafybeie4jymhtanwfv6uuij4rqqdikwhdb4ymi6gauaumkm37ycjoy6udy.ipfs.infura-ipfs.io/?token=", web3.utils.toWei("0.001", "Ether"));
 };
