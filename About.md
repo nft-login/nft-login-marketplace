@@ -8,6 +8,8 @@ NFTs are a good way to finance game development but also give the fans the abili
 The marketplace allows game makers deploy contracts and mint NFT Tokens.
 The fan community can buy the nft tokens then.
 
+The game hextris is not part of the hackathon and just embedded into our page.
+
 ## How we built it
 
 First we cloned a marketplace called crypto boys and modified it a little bit.
@@ -38,3 +40,17 @@ rust, web3, github-pages, react
 ## "Try it out" links
 
 * https://nft-login.github.io/nft-login-marketplace/
+
+## Video Text
+
+- imagine you are a game maker and your game is already beta
+- why not give your fan community early access
+- visit the early access nft marketplace
+- add your game's name and a description in markdown
+- select a price for the nft token
+- now connect your metamask and deploy your nft contract
+- gamers can now buy nft tokens for your game
+- lets watch a demo where a gamers must buy a token to get access
+- the gamer does not own a token so no access is granted
+- but the gamer can visit the market and buy an nft
+- now the gamer can login and enjoy the game
