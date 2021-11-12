@@ -1,7 +1,7 @@
 {
   "main.css": "/nft-login-marketplace/celo/static/css/main.20248a64.chunk.css",
-  "main.js": "/nft-login-marketplace/celo/static/js/main.d686a116.chunk.js",
-  "main.js.map": "/nft-login-marketplace/celo/static/js/main.d686a116.chunk.js.map",
+  "main.js": "/nft-login-marketplace/celo/static/js/main.f1ce93cb.chunk.js",
+  "main.js.map": "/nft-login-marketplace/celo/static/js/main.f1ce93cb.chunk.js.map",
   "static/js/1.ac803d94.chunk.js": "/nft-login-marketplace/celo/static/js/1.ac803d94.chunk.js",
   "static/js/1.ac803d94.chunk.js.map": "/nft-login-marketplace/celo/static/js/1.ac803d94.chunk.js.map",
   "runtime~main.js": "/nft-login-marketplace/celo/static/js/runtime~main.39e32f27.js",
@@ -10,6 +10,6 @@
   "static/media/metamask.svg": "/nft-login-marketplace/celo/static/media/metamask.fbf33967.svg",
   "static/css/main.20248a64.chunk.css.map": "/nft-login-marketplace/celo/static/css/main.20248a64.chunk.css.map",
   "index.html": "/nft-login-marketplace/celo/index.html",
-  "precache-manifest.ff89648e846310eec5781fb1f32874a2.js": "/nft-login-marketplace/celo/precache-manifest.ff89648e846310eec5781fb1f32874a2.js",
+  "precache-manifest.351dac5584e06ab0ba93a33a7cd12b1f.js": "/nft-login-marketplace/celo/precache-manifest.351dac5584e06ab0ba93a33a7cd12b1f.js",
   "service-worker.js": "/nft-login-marketplace/celo/service-worker.js"
 }

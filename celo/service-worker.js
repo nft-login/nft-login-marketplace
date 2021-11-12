@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nft-login-marketplace/celo/precache-manifest.ff89648e846310eec5781fb1f32874a2.js"
+  "/nft-login-marketplace/celo/precache-manifest.351dac5584e06ab0ba93a33a7cd12b1f.js"
 );
 
 workbox.clientsClaim();
