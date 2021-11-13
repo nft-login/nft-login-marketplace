@@ -41,11 +41,22 @@ module.exports = {
     },
     celo: {
       provider: () =>
-        new HDWalletProvider(MNEMONIC, `https://alfajores-forno.celo-testnet.org`),
+        new HDWalletProvider(
+          MNEMONIC,
+          `https://alfajores-forno.celo-testnet.org`
+        ),
       network_id: 44787,
       confirmations: 5,
       timeoutBlocks: 200,
       skipDryRun: true,
+    },
+    polygon: {
+      provider: () =>
+        new HDWalletProvider(
+          MNEMONIC,
+          `https://matic-mumbai.chainstacklabs.com/`
+        ),
+      network_id: 80001,
     },
   },
   contracts_directory: "./src/contracts/",
