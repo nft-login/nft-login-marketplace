@@ -58,6 +58,14 @@ module.exports = {
         ),
       network_id: 80001,
     },
+    metis: {
+      provider: () =>
+        new HDWalletProvider(
+          MNEMONIC,
+          `https://stardust.metis.io/?owner=588`
+        ),
+      network_id: 588,
+    },
   },
   contracts_directory: "./src/contracts/",
   contracts_build_directory: "./src/abis/",
