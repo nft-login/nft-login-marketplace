@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { HashRouter, Route } from "react-router-dom";
 import "./App.css";
-import { Web3Blockchain } from "../api/web3_blockchain";
+//import { Web3Blockchain } from "../api/web3_blockchain";
+import { Lisk } from "../api/lisk";
 
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -24,7 +25,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      blockchain: new Web3Blockchain(),
+      blockchain: new Lisk(),
       accountAddress: "",
       accountBalance: "",
       earlyAccessGameContract: null,

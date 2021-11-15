@@ -34,7 +34,7 @@ class FormAndPreview extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6" style={{"visibility": "hidden"}}>
             <form onSubmit={this.callDeployMyNFTFromApp} className="pt-4 mt-1">
             <div className="form-group">
                 <label htmlFor="cryptoBoyName">Name</label>
