@@ -1,5 +1,7 @@
 // source: https://github.com/LiskHQ/lisk-sdk-examples/blob/development/tutorials/nft/frontend_app/src/api/index.js
 
+import { cryptography } from "@liskhq/lisk-client";
+
 function getContract() {
   const search = window.location.search;
   const contract = new URLSearchParams(search).get("contract");
@@ -17,8 +19,7 @@ function getAccount() {
 export class Lisk {
   constructor() {
     this.contract = undefined;
-    this.url1 = "http://localhost:4000/";
-    this.url2 = "http://localhost:8080/";
+    this.url = "http://localhost:8080/";
     this.nodeInfo = undefined;
   }
 
@@ -27,25 +28,32 @@ export class Lisk {
   };
 
   fetchNodeInfo = async () => {
-    return fetch(`${this.url1}api/node/info`)
+    return fetch(`${this.url}api/node/info`)
       .then((res) => res.json())
-      .then((res) => res.data);
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      });
   };
 
   fetchAccountInfo = async (address) => {
-    return fetch(`${this.url1}api/accounts/${address}`)
+    console.log(address);
+    const base32UIAddress = cryptography
+      .getAddressFromBase32Address(address)
+      .toString("hex");
+    return fetch(`${this.url}api/accounts/${base32UIAddress}`)
       .then((res) => res.json())
       .then((res) => res.data);
   };
 
   fetchAllNFTTokens = async () => {
-    return fetch(`${this.url2}api/nft_tokens`)
+    return fetch(`${this.url}api/nft_tokens`)
       .then((res) => res.json())
       .then((res) => res.data);
   };
 
   fetchNFTToken = async (id) => {
-    return fetch(`${this.url2}api/nft_tokens/${id}`)
+    return fetch(`${this.url}api/nft_tokens/${id}`)
       .then((res) => res.json())
       .then((res) => res.data);
   };
@@ -60,7 +68,7 @@ export class Lisk {
   };
 
   getAccounts = async () => {
-    const account = getAccount() || "696108f9705a9c8313cc3d5e80145422d6c4bcc4";
+    const account = getAccount() || "lsk9muuyf5u5673bpfonq83zmvkp55o48bpspgpkw";
     return [account];
   };
 
@@ -74,17 +82,20 @@ export class Lisk {
 
   loadTokenByIndex = async (index) => {
     return (await this.fetchAllNFTTokens())[index];
-  }
+  };
 
   loadToken = async (tokenId) => {
     let token = await this.loadTokenByIndex(tokenId);
+    let owner = cryptography.getBase32AddressFromAddress(
+      Buffer.from(token["ownerAddress"], "hex")
+    );
     console.log(token);
     token = {
-      tokenId: token['id'],
-      uri: (await this.tokenURI(tokenId)),
+      tokenId: token["id"],
+      uri: await this.tokenURI(tokenId),
       price: token["value"],
-      currentOwner: token["ownerAddress"],
-      forSale: true
+      currentOwner: owner,
+      forSale: true,
     };
     console.log(token);
     return token;
@@ -129,7 +140,9 @@ export class Lisk {
   };
 
   ownerOf = async (tokenId) => {
-    return (await this.loadTokenByIndex(tokenId))["ownerAddress"];
+    let owner = (await this.loadTokenByIndex(tokenId))["ownerAddress"];
+    owner = cryptography.getBase32AddressFromAddress(Buffer.from(owner, "hex"));
+    return owner;
   };
 
   tokenURI = async (tokenId) => {

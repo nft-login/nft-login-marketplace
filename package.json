@@ -5,6 +5,7 @@
   "author": "devpavan04",
   "homepage": "https://devpavan04.github.io/cryptoboys-nft-marketplace",
   "dependencies": {
+    "@liskhq/lisk-client": "^5.2.0",
     "@openzeppelin/contracts": "^4.4.0-rc.0",
     "@truffle/hdwallet-provider": "^1.5.1",
     "babel-polyfill": "6.26.0",
