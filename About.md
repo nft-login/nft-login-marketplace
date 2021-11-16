@@ -52,6 +52,7 @@ You can test you own this token by visiting https://nft-login.github.io/nft-logi
 ## Heco Blockchain
 
 Visit https://nft-login.github.io/nft-login-marketplace/heco/, login to your metamask and buy a token.
+Also hosted on 4everland https://market.nft-login.net/ and https://nft-login-marketplace.4everland.app/ .
 
 You can test you own this token by visiting https://nft-login.github.io/nft-login-demo/heco/ and login by signing the message with your account that owns the token. Alternatively you can test it on 4everland https://heco-nft-login-demo.4everland.app.
 
