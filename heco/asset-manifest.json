@@ -1,7 +1,7 @@
 {
   "main.css": "/nft-login-marketplace/heco/static/css/main.20248a64.chunk.css",
-  "main.js": "/nft-login-marketplace/heco/static/js/main.91850dd5.chunk.js",
-  "main.js.map": "/nft-login-marketplace/heco/static/js/main.91850dd5.chunk.js.map",
+  "main.js": "/nft-login-marketplace/heco/static/js/main.3ff7e9cd.chunk.js",
+  "main.js.map": "/nft-login-marketplace/heco/static/js/main.3ff7e9cd.chunk.js.map",
   "static/js/1.2c8a1b98.chunk.js": "/nft-login-marketplace/heco/static/js/1.2c8a1b98.chunk.js",
   "static/js/1.2c8a1b98.chunk.js.map": "/nft-login-marketplace/heco/static/js/1.2c8a1b98.chunk.js.map",
   "runtime~main.js": "/nft-login-marketplace/heco/static/js/runtime~main.b152a6d8.js",
@@ -10,6 +10,6 @@
   "static/media/metamask.svg": "/nft-login-marketplace/heco/static/media/metamask.fbf33967.svg",
   "static/css/main.20248a64.chunk.css.map": "/nft-login-marketplace/heco/static/css/main.20248a64.chunk.css.map",
   "index.html": "/nft-login-marketplace/heco/index.html",
-  "precache-manifest.c2064ac932f6af40e224517f0d31f6c3.js": "/nft-login-marketplace/heco/precache-manifest.c2064ac932f6af40e224517f0d31f6c3.js",
+  "precache-manifest.20dd59049016899c70dff55bf8e81392.js": "/nft-login-marketplace/heco/precache-manifest.20dd59049016899c70dff55bf8e81392.js",
   "service-worker.js": "/nft-login-marketplace/heco/service-worker.js"
 }
