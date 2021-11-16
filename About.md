@@ -22,11 +22,13 @@ We needed the tokens to deploy the contract.
 
 ## Accomplishments that we're proud of
 
-We are proud that we deployed a erc721 smart contract, hosted a marketplace.
+We are proud that we deployed a erc721 smart contract and hosted a marketplace.
 
 ## What we learned
 
 We learned to deploy smart contracts and how to host web3 software on github pages.
+We played with ipfs and learned how to integrate it into web pages as the data for the contracts is stored on ipfs while the
+hash address of the data is stored in the contract.
 
 ## What's next for the project
 
@@ -34,6 +36,7 @@ Next we need to give the frontend a redesign.
 An extra contract should be created to list all games which provide NFTs.
 
 Connect more chains. Currently connected are:
+
 - https://nft-login.github.io/nft-login-marketplace/kovan/
 - https://nft-login.github.io/nft-login-marketplace/okt/
 - https://nft-login.github.io/nft-login-marketplace/heco/
