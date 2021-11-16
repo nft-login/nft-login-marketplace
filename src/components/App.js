@@ -167,7 +167,7 @@ class App extends Component {
 
   mintMyNFT = async (tokenCount) => {
     this.setState({ loading: true });
-    this.state.blockchain.mint(tokenCount).then(() => {
+    this.state.blockchain.mint(tokenCount, this.state.accountAddress).then(() => {
       localStorage.setItem(this.state.accountAddress, new Date().getTime());
       this.setState({ loading: false });
       window.location.reload();
