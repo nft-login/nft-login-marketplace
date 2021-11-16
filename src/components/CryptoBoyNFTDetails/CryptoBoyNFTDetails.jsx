@@ -4,7 +4,7 @@ class CryptoBoyNFTDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newCryptoBoyPrice: "",
+      newTokenPrice: "",
     };
   }
 
@@ -29,11 +29,7 @@ class CryptoBoyNFTDetails extends Component {
         </p>
         <p>
           <span className="font-weight-bold">Price</span> :{" "}
-          {window.web3.utils.fromWei(
-            this.props.token.price.toString(),
-            "Ether"
-          )}{" "}
-          Ξ
+          {this.props.token.price} Ξ
         </p>
         <div>
           {this.props.accountAddress === this.props.token.currentOwner ? (
@@ -42,25 +38,25 @@ class CryptoBoyNFTDetails extends Component {
                 e.preventDefault();
                 this.callChangeTokenPriceFromApp(
                   this.props.token.tokenId,
-                  this.state.newCryptoBoyPrice
+                  this.state.newTokenPrice
                 );
               }}
             >
               <div className="form-group mt-4 ">
-                <label htmlFor="newCryptoBoyPrice">
+                <label htmlFor="newTokenPrice">
                   <span className="font-weight-bold">Change Token Price</span> :
                 </label>{" "}
                 <input
                   required
                   type="number"
-                  name="newCryptoBoyPrice"
-                  id="newCryptoBoyPrice"
-                  value={this.state.newCryptoBoyPrice}
+                  name="newTokenPrice"
+                  id="newTokenPrice"
+                  value={this.state.newTokenPrice}
                   className="form-control w-50"
                   placeholder="Enter new price"
                   onChange={(e) =>
                     this.setState({
-                      newCryptoBoyPrice: e.target.value,
+                      newTokenPrice: e.target.value,
                     })
                   }
                 />
@@ -82,9 +78,7 @@ class CryptoBoyNFTDetails extends Component {
                 className="btn btn-outline-danger mt-4 w-50"
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
-                  this.props.toggleForSale(
-                    this.props.cryptoboy.tokenId
-                  )
+                  this.props.toggleForSale(this.props.cryptoboy.tokenId)
                 }
               >
                 Remove from sale
@@ -94,9 +88,7 @@ class CryptoBoyNFTDetails extends Component {
                 className="btn btn-outline-success mt-4 w-50"
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={() =>
-                  this.props.toggleForSale(
-                    this.props.cryptoboy.tokenId
-                  )
+                  this.props.toggleForSale(this.props.cryptoboy.tokenId)
                 }
               >
                 Keep for sale
@@ -112,18 +104,10 @@ class CryptoBoyNFTDetails extends Component {
                 value={this.props.token.price}
                 style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                 onClick={(e) =>
-                  this.props.buyCryptoBoy(
-                    this.props.token.tokenId,
-                    e.target.value
-                  )
+                  this.props.buyToken(this.props.token.tokenId, e.target.value)
                 }
               >
-                Buy For{" "}
-                {window.web3.utils.fromWei(
-                  this.props.token.price.toString(),
-                  "Ether"
-                )}{" "}
-                Ξ
+                Buy For {this.props.token.price} Ξ
               </button>
             ) : (
               <>
@@ -132,12 +116,7 @@ class CryptoBoyNFTDetails extends Component {
                   style={{ fontSize: "0.8rem", letterSpacing: "0.14rem" }}
                   className="btn btn-outline-primary mt-3 w-50"
                 >
-                  Buy For{" "}
-                  {window.web3.utils.fromWei(
-                    this.props.token.price.toString(),
-                    "Ether"
-                  )}{" "}
-                  Ξ
+                  Buy For {this.props.token.price.toString()} Ξ
                 </button>
                 <p className="mt-2">Currently not for sale!</p>
               </>

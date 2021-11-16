@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { HashRouter, Route } from "react-router-dom";
 import "./App.css";
-import Web3 from "web3";
-import EarlyAccessGame from "../abis/EarlyAccessGame.json";
+import { Web3Blockchain } from "../api/web3_blockchain";
 
 import FormAndPreview from "../components/FormAndPreview/FormAndPreview";
 import AllCryptoBoys from "./AllCryptoBoys/AllCryptoBoys";
@@ -21,17 +20,11 @@ const ipfs = ipfsClient({
   protocol: "https",
 });
 
-function getContract() {
-  const search = window.location.search;
-  const contract = new URLSearchParams(search).get("contract");
-  console.log(contract);
-  return contract;
-}
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      blockchain: new Web3Blockchain(),
       accountAddress: "",
       accountBalance: "",
       earlyAccessGameContract: null,
@@ -53,10 +46,10 @@ class App extends Component {
   }
 
   componentWillMount = async () => {
-    await this.loadWeb3();
   };
 
   componentDidMount = async () => {
+    await this.state.blockchain.init();
     await this.loadBlockchainData();
     await this.setMetaData();
     await this.setMintBtnTimer();
@@ -95,78 +88,50 @@ class App extends Component {
     }, 1000);
   };
 
-  loadWeb3 = async () => {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-    } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
-    }
-  };
-
-  loadToken = async (contract, tokenId) => {
-    const token = {
-      tokenId: tokenId,
-      uri: await contract.methods.tokenURI(tokenId).call(),
-      price: await contract.methods.priceOf(tokenId).call(),
-      currentOwner: await contract.methods.ownerOf(tokenId).call(),
-      forSale: await contract.methods.isForSale(tokenId).call(),
-    };
-    console.log(token);
-    this.setState({
-      tokens: [...this.state.tokens, token],
-    });
-  };
-
   loadBlockchainData = async () => {
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
+    const blockchain = this.state.blockchain;
+    const accounts = await blockchain.getAccounts();
     if (accounts.length === 0) {
       this.setState({ metamaskConnected: false });
     } else {
       this.setState({ metamaskConnected: true });
       this.setState({ loading: true });
       this.setState({ accountAddress: accounts[0] });
-      let accountBalance = await web3.eth.getBalance(accounts[0]);
-      accountBalance = web3.utils.fromWei(accountBalance, "Ether");
+      let accountBalance = await blockchain.getBalance(accounts[0]);
       this.setState({ accountBalance });
       this.setState({ loading: false });
-      const networkId = await web3.eth.net.getId();
-      const networkData = EarlyAccessGame.networks[networkId];
-      const contractAddress = getContract() || networkData.address;
-      if (networkData) {
+      const networkId = await blockchain.networkId();
+      console.log(networkId);
+      const contractAddress = await this.state.blockchain.contractAddress();
+      if (contractAddress) {
         this.setState({ loading: true });
-        const earlyAccessGameContract = web3.eth.Contract(
-          EarlyAccessGame.abi,
+        const earlyAccessGameContract = this.state.blockchain.loadContract(
           contractAddress
         );
         this.setState({ earlyAccessGameContract });
         this.setState({ contractDetected: true });
-        const count = await earlyAccessGameContract.methods
-          .totalSupply()
-          .call();
+        const count = await this.state.blockchain.tokenCount();
+
+        console.log(count);
         this.setState({ count });
         for (var i = 0; i < count; i++) {
-          this.loadToken(earlyAccessGameContract, i);
+          this.state.blockchain.loadToken(i).then((token) => {
+            this.setState({
+              tokens: [...this.state.tokens, token],
+            });
+          });
         }
-        let totalTokensMinted = await earlyAccessGameContract.methods
-          .totalSupply()
-          .call();
-        totalTokensMinted = totalTokensMinted.toNumber();
+        let totalTokensMinted = await this.state.blockchain.totalSupply();
         this.setState({ totalTokensMinted });
-        let totalTokensOwnedByAccount = await earlyAccessGameContract.methods
-          .balanceOf(this.state.accountAddress)
-          .call();
-        totalTokensOwnedByAccount = totalTokensOwnedByAccount.toNumber();
+        let totalTokensOwnedByAccount = await this.state.blockchain.balanceOf(
+          this.state.accountAddress
+        );
         this.setState({ totalTokensOwnedByAccount });
-        let name = await earlyAccessGameContract.methods.name().call();
+        let name = await this.state.blockchain.name();
         this.setState({ name });
-        let symbol = await earlyAccessGameContract.methods.symbol().call();
+        let symbol = await this.state.blockchain.symbol();
         this.setState({ symbol });
-        let baseURI = await earlyAccessGameContract.methods.baseURI().call();
+        let baseURI = await this.state.blockchain.baseURI();
         this.setState({ baseURI });
         this.setState({ loading: false });
       } else {
@@ -202,14 +167,11 @@ class App extends Component {
 
   mintMyNFT = async (tokenCount) => {
     this.setState({ loading: true });
-    this.state.earlyAccessGameContract.methods
-      .mintMultiple(this.state.accountAddress, tokenCount)
-      .send({ from: this.state.accountAddress })
-      .on("confirmation", () => {
-        localStorage.setItem(this.state.accountAddress, new Date().getTime());
-        this.setState({ loading: false });
-        window.location.reload();
-      });
+    this.state.blockchain.mint(tokenCount).then(() => {
+      localStorage.setItem(this.state.accountAddress, new Date().getTime());
+      this.setState({ loading: false });
+      window.location.reload();
+    });
   };
 
   deployMyNFT = async (name, description, price) => {
@@ -218,43 +180,14 @@ class App extends Component {
     const cid = await ipfs.add(description);
     let tokenURI = `https://ipfs.infura.io/ipfs/${cid.path}/?token=`;
     console.log(tokenURI);
-    this.state.earlyAccessGameContract
-      .deploy({
-        data: EarlyAccessGame.bytecode,
-        arguments: [
-          name,
-          "EAG",
-          tokenURI,
-          window.web3.utils.toWei(price, "Ether"),
-        ],
-      })
-      .send({ from: this.state.accountAddress })
-      .on("error", function(error) {})
-      .on("confirmation", (confirmationNumber, receipt) => {
-        let newContractInstance = this.state.earlyAccessGameContract.clone();
-        newContractInstance.options.address = receipt.contractAddress;
-        console.log(receipt.contractAddress);
-        localStorage.setItem(this.state.accountAddress, new Date().getTime());
-        var searchParams = new URLSearchParams(window.location.search);
-        searchParams.set("contract", receipt.contractAddress);
-        window.location.search = searchParams.toString();
-        this.setState({
-          loading: false,
-          earlyAccessGameContract: newContractInstance,
-        });
-        var newRelativePathQuery =
-          window.location.pathname + "?" + searchParams.toString();
-        window.history.pushState(null, "", newRelativePathQuery);
-        window.location.reload();
-      });
+    this.state.blockchain.deployNew(name, "EAG", tokenURI, price, this.state.accountAddress);
   };
 
   toggleForSale = (tokenId) => {
     this.setState({ loading: true });
-    this.state.earlyAccessGameContract.methods
-      .toggleForSale(tokenId)
-      .send({ from: this.state.accountAddress })
-      .on("confirmation", () => {
+    this.state.blockchain
+      .toggleForSale(tokenId, this.state.accountAddress)
+      .then(() => {
         this.setState({ loading: false });
         window.location.reload();
       });
@@ -262,26 +195,21 @@ class App extends Component {
 
   changeTokenPrice = (tokenId, newPrice) => {
     this.setState({ loading: true });
-    const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-    this.state.earlyAccessGameContract.methods
-      .setPrice(tokenId, newTokenPrice)
-      .send({ from: this.state.accountAddress })
-      .on("confirmation", () => {
+    this.state.blockchain
+      .changeTokenPrice(tokenId, newPrice, this.state.accountAddress)
+      .then(() => {
         this.setState({ loading: false });
         window.location.reload();
       });
   };
 
-  buyCryptoBoy = (tokenId, price) => {
+  buyToken = (tokenId, price) => {
     this.setState({ loading: true });
-    this.state.earlyAccessGameContract.methods
-      .buy(tokenId)
-      .send({ from: this.state.accountAddress, value: price })
-      .on("confirmation", () => {
-        this.setState({ loading: false });
-        window.location.reload();
-      });
-  };
+    this.state.blockchain.buyToken(tokenId, price, this.state.accountAddress).then(() => {
+      this.setState({ loading: false });
+      window.location.reload();
+    })
+  }
 
   render() {
     return (
@@ -330,7 +258,7 @@ class App extends Component {
                     totalTokensMinted={this.state.totalTokensMinted}
                     changeTokenPrice={this.changeTokenPrice}
                     toggleForSale={this.toggleForSale}
-                    buyCryptoBoy={this.buyCryptoBoy}
+                    buyToken={this.buyToken}
                   />
                 )}
               />
@@ -350,7 +278,8 @@ class App extends Component {
                 path="/queries"
                 render={() => (
                   <Queries
-                    earlyAccessGameContract={this.state.earlyAccessGameContract}
+                  ownerOf={this.state.blockchain.ownerOf}
+                    tokenURI={this.state.blockchain.tokenURI}
                   />
                 )}
               />

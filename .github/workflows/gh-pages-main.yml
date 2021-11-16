@@ -1,4 +1,7 @@
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 name: CI
 
@@ -15,9 +18,9 @@ jobs:
       - name: Install node dependencies
         run: npm install
       - name: Build App
-        run: PUBLIC_URL=/nft-login-marketplace/${GITHUB_REF##*/} npm run build
-      - name: create gh-pages in subdir
-        run: mkdir gh-pages/ && mv build/ gh-pages/${GITHUB_REF##*/}/
+        run: PUBLIC_URL=/nft-login-marketplace npm run build
+      - name: creage gh-pages
+        run: mv build/ gh-pages/
 
       - name: Deploy App
         uses: peaceiris/actions-gh-pages@v3

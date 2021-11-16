@@ -2,6 +2,14 @@
 <i>NFT marketplace for Game Maker to provide early access as NFTs.</i>
 #
 
+### How to test
+
+* install metamask.
+* get some ether from eg. https://faucets.chain.link/kovan
+* visit our marketplace https://nft-login.github.io/nft-login-marketplace/kovan/#/
+* Buy an nft on the market https://nft-login.github.io/nft-login-marketplace/kovan/#/marketplace
+* If you can login here https://nft-login.github.io/nft-login-demo/kovan/ it worked an you own an nft for this game
+
 ### Features
 - Mint custom ERC721 implemented Crypto Boy Tokens.
 - Sell Crypto Boy tokens on the marketplace.
