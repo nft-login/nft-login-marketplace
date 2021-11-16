@@ -15,10 +15,7 @@ const Queries = (props) => {
   const getTokenOwner = async (e) => {
     e.preventDefault();
     try {
-      console.log(tokenIdForOwner);
-      const owner = await props.earlyAccessGameContract.methods
-        .ownerOf(tokenIdForOwner)
-        .call();
+      const owner = await props.ownerOf(tokenIdForOwner)
       setTokenOwner(owner);
       setTimeout(() => {
         setTokenOwner("");
@@ -33,9 +30,7 @@ const Queries = (props) => {
   const getTokenMetadata = async (e) => {
     e.preventDefault();
     try {
-      const metadata = await props.earlyAccessGameContract.methods
-        .tokenURI(tokenIdForMetadata)
-        .call();
+      const metadata = await props.tokenURI(tokenIdForMetadata);
       setTokenMetadata(
         metadata.substr(0, 60) + "..." + metadata.slice(metadata.length - 5)
       );
